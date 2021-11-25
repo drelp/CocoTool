@@ -213,7 +213,7 @@
                                                 <platform>mac</platform>
                                                 <createTarball>true</createTarball>
 <!--                                                <jdkPath>X:\\path\to\mac\jdk</jdkPath>-->
-<jrePath>../jre1.8.0_311.jre/Contents/Home</jrePath>
+                                                    <jrePath>../jre1.8.0_311.jre/Contents/Home</jrePath>
                                             </configuration>
                                         </execution>
                 </executions>
