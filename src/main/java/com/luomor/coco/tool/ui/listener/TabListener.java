@@ -1,0 +1,69 @@
+package com.luomor.coco.tool.ui.listener;
+
+
+import cn.hutool.core.util.RuntimeUtil;
+import com.luomor.coco.tool.ui.form.MainWindow;
+import com.luomor.coco.tool.ui.form.func.NetForm;
+import com.luomor.coco.tool.util.SystemUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+/**
+ * <pre>
+ * tab事件监听
+ * </pre>
+ *
+ * @author <a href="https://github.com/zhangchunsheng">Peter Zhang</a>
+ * @since 2017/6/21.
+ */
+@Slf4j
+public class TabListener {
+
+    private static boolean warnFlag = true;
+
+    public static void addListeners() {
+        MainWindow.getInstance().getTabbedPane().addChangeListener(new ChangeListener() {
+            /**
+             * Invoked when the target of the listener has changed its state.
+             *
+             * @param e a ChangeEvent object
+             */
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int index = MainWindow.getInstance().getTabbedPane().getSelectedIndex();
+                switch (index) {
+                    case 9:
+                        try {
+                            String ipConfigStr;
+                            if (SystemUtil.isWindowsOs()) {
+                                ipConfigStr = RuntimeUtil.execForStr("ipconfig");
+                            } else {
+                                ipConfigStr = RuntimeUtil.execForStr("ifconfig");
+                            }
+                            NetForm.getInstance().getIpConfigTextArea().setText(ipConfigStr);
+                            NetForm.getInstance().getIpConfigTextArea().setCaretPosition(0);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            log.error(ExceptionUtils.getStackTrace(ex));
+                        }
+                        break;
+                    case 12:
+                    case 13:
+                    case 14:
+                        if (warnFlag) {
+                            JOptionPane.showMessageDialog(MainWindow.getInstance().getMainPanel(), "\n该功能尚未实现，目前仅供UI预览\n" +
+                                            "\n", "预览提示",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+}
